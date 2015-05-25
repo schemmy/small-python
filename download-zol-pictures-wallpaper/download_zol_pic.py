@@ -18,6 +18,10 @@ import sys
 import requests
 from bs4 import BeautifulSoup
 
+# 设置编码，不设置时，我本地无法在运行时显示文件名，会报当前文件的第93行编码错误
+reload(sys)
+sys.setdefaultencoding("utf-8")
+
 # ZOL壁纸首页，若下载手机壁纸则应设为 zol_url = "http://sj.zol.com.cn"
 zol_url = "http://desk.zol.com.cn"
 # 壁纸的类别，可根据你所选的类别的url修改
@@ -85,7 +89,8 @@ def download_pic(url):
             # 如果文件名为 file_name 的文件不存在（则说明该文件没有下载过），下载该文件
             # 加入 if 的目的是为了避免重复下载
             if not os.path.exists(file_path):
-                f = open(file_path, 'w')
+                #  如果不加b参数，下载图片会有编码错误，全是彩电~.~，运行系统：win7
+                f = open(file_path, 'wb')
                 print "downloading " + file_name + "......"
                 f.write(real_pic_r.content)
                 f.close()
